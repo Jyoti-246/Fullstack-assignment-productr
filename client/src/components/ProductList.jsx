@@ -2,15 +2,32 @@ import { useState } from "react";
 import Button from "./Button";
 import { MdDeleteOutline } from "react-icons/md";
 import ProductModal from "./ProductModel";
+import DeleteModel from "./DeleteModel";
 import NoProduct from "./NoProduct";
 import { useLocation } from "react-router-dom";
 
 const ProductList = ({ type = "all", products, setProducts }) => {
   const [editModel, setEditModel] = useState(false);
-
+  const [openDelete, setOpenDelete] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const location = useLocation();
 
   const status = location.pathname === "/publish" ? "published" : "unpublished";
+
+  const handleDeleteClick = (product) => {
+    setSelectedProduct(product);
+    setOpenDelete(true);
+  };
+
+  // confirm delete
+  const confirmDelete = async (id) => {
+    await fetch(`http://localhost:5000/products/${id}`, {
+      method: "DELETE",
+    });
+
+    setProducts((prev) => prev.filter((p) => p._id !== id));
+    setOpenDelete(false);
+  };
 
   const filteredProducts =
     type === "all"
@@ -100,7 +117,10 @@ const ProductList = ({ type = "all", products, setProducts }) => {
               <Button variant={"edit"} onClick={() => setEditModel(true)}>
                 Edit
               </Button>
-              <Button variant={"delete"}>
+              <Button
+                variant={"delete"}
+                onClick={() => handleDeleteClick(product)}
+              >
                 <MdDeleteOutline className="h-6 w-6" />
               </Button>
             </div>
@@ -111,6 +131,14 @@ const ProductList = ({ type = "all", products, setProducts }) => {
                 onClose={() => setEditModel(false)}
                 setProducts={setProducts}
                 editProduct={product}
+              />
+            )}
+            {openDelete === true && (
+              <DeleteModel
+                isOpen={openDelete}
+                product={selectedProduct}
+                onClose={() => setOpenDelete(false)}
+                onConfirm={confirmDelete}
               />
             )}
           </li>
