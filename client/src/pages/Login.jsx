@@ -37,6 +37,8 @@ const Login = () => {
       return;
     }
 
+    console.log("LOGIN RESPONSE:", data);
+
     localStorage.setItem("token", data.token);
 
     alert("Login successful");

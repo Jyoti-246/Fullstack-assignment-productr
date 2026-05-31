@@ -8,6 +8,7 @@ import Products from "./pages/Products";
 import Publish from "./pages/Publish";
 import Unpublish from "./pages/Unpublish";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFound from "./components/NotFound";
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
             <Route path="unpublish" element={<Unpublish />} />
           </Route>
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

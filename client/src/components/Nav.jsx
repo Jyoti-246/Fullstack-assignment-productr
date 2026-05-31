@@ -2,6 +2,7 @@ import { TbShoppingBag } from "react-icons/tb";
 import { VscSearch } from "react-icons/vsc";
 import profile from "../images/profile.jpg";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import Logout from "./Logout";
 
 const Nav = ({ search, setSearch }) => {
   return (
