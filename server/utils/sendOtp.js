@@ -5,11 +5,9 @@ const sendOtp = async (email, otp) => {
     service: "gmail",
     auth: {
       user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS,
+      pass: process.env.EMAIL_PASS.replace(/\s/g, ""),
     },
   });
-
-  console.log("EMAIL RECEIVED:", email);
 
   await transporter.sendMail({
     from: process.env.EMAIL,
