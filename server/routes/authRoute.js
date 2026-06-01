@@ -43,7 +43,14 @@ router.post("/verify-otp", (req, res) => {
 
   delete otpStore[cleanEmail];
 
-  res.json({ message: "Login successful" });
+  const token = jwt.sign({ email: cleanEmail }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+
+  return res.json({
+    message: "Login successful",
+    token: token,
+  });
 });
 
 module.exports = router;
