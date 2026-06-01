@@ -4,7 +4,7 @@ const sendOtp = require("../utils/sendOtp");
 
 const router = express.Router();
 
-const otpStore = {}; // temporary storage
+const otpStore = {};
 
 router.post("/send-otp", async (req, res) => {
   const { email } = req.body;

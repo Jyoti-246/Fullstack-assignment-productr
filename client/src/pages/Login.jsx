@@ -12,14 +12,11 @@ const Login = () => {
   const navigate = useNavigate();
 
   const sendOtp = async () => {
-    await fetch(
-      "https://fullstack-assignment-productr.vercel.app/auth/send-otp",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      },
-    );
+    await fetch("https://notes-app-mhne.onrender.com/auth/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
 
     setStep(2);
   };
@@ -28,7 +25,7 @@ const Login = () => {
     const finalOtp = otp.join("");
 
     const res = await fetch(
-      "https://fullstack-assignment-productr.vercel.app/auth/verify-otp",
+      "https://notes-app-mhne.onrender.com/auth/verify-otp",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
