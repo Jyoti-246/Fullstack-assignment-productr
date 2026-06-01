@@ -14,7 +14,7 @@ const sendOtp = async (email, otp) => {
   await transporter.sendMail({
     from: process.env.EMAIL,
     to: email,
-    subject: "Test",
+    subject: "OTP Verification",
     text: `Your OTP is ${otp}`,
   });
 };
