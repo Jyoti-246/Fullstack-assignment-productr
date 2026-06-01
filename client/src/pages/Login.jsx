@@ -12,11 +12,23 @@ const Login = () => {
   const navigate = useNavigate();
 
   const sendOtp = async () => {
-    await fetch("https://notes-app-mhne.onrender.com/auth/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
+    const res = await fetch(
+      "https://notes-app-mhne.onrender.com/auth/send-otp",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      },
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message);
+      return;
+    }
 
     setStep(2);
   };
