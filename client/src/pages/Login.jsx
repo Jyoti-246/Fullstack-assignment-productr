@@ -60,6 +60,10 @@ const Login = () => {
       return;
     }
 
+    console.log("OTP:", data.otp);
+
+    alert(`OTP: ${data.otp}`);
+
     localStorage.setItem("token", data.token);
 
     alert("Login successful");
