@@ -32,6 +32,10 @@ const Login = () => {
         return;
       }
 
+      console.log("OTP:", data.otp);
+
+      alert(`OTP: ${data.otp}`);
+
       const data = JSON.parse(text);
       console.log(data);
 
@@ -59,10 +63,6 @@ const Login = () => {
       alert(data.message);
       return;
     }
-
-    console.log("OTP:", data.otp);
-
-    alert(`OTP: ${data.otp}`);
 
     localStorage.setItem("token", data.token);
 
