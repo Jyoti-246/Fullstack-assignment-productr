@@ -13,8 +13,6 @@ app.use(cors());
 
 app.use(express.json());
 
-console.log("DEPLOY VERSION RESEND TEST");
-
 app.get("/", (req, res) => {
   res.send("API running");
 });

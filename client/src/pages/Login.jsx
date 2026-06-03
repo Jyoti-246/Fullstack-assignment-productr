@@ -12,8 +12,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   const sendOtp = async () => {
-    console.log("login button");
-
     try {
       const res = await fetch(
         "https://notes-app-mhne.onrender.com/auth/send-otp",
@@ -25,8 +23,6 @@ const Login = () => {
           body: JSON.stringify({ email }),
         },
       );
-      console.log(res);
-      console.log("testtt");
 
       const text = await res.text();
       console.log("SERVER RESPONSE:", text);
@@ -63,8 +59,6 @@ const Login = () => {
       alert(data.message);
       return;
     }
-
-    console.log("LOGIN RESPONSE:", data);
 
     localStorage.setItem("token", data.token);
 
