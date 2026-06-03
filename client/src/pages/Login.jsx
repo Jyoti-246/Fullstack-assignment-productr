@@ -32,12 +32,10 @@ const Login = () => {
         return;
       }
 
+      const data = JSON.parse(text);
       console.log("OTP:", data.otp);
 
       alert(`OTP: ${data.otp}`);
-
-      const data = JSON.parse(text);
-      console.log(data);
 
       setStep(2);
     } catch (error) {
