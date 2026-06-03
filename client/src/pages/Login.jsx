@@ -12,25 +12,37 @@ const Login = () => {
   const navigate = useNavigate();
 
   const sendOtp = async () => {
-    const res = await fetch(
-      "https://notes-app-mhne.onrender.com/auth/send-otp",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    console.log("login button");
+
+    try {
+      const res = await fetch(
+        "https://notes-app-mhne.onrender.com/auth/send-otp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
         },
-        body: JSON.stringify({ email }),
-      },
-    );
+      );
+      console.log(res);
+      console.log("testtt");
 
-    const data = await res.json();
+      const text = await res.text();
+      console.log("SERVER RESPONSE:", text);
 
-    if (!res.ok) {
-      alert(data.message);
-      return;
+      if (!res.ok) {
+        alert("Server error");
+        return;
+      }
+
+      const data = JSON.parse(text);
+      console.log(data);
+
+      setStep(2);
+    } catch (error) {
+      console.error("FRONTEND ERROR:", error);
     }
-
-    setStep(2);
   };
 
   const verifyOtp = async () => {
@@ -96,7 +108,7 @@ const Login = () => {
         {step == 1 && (
           <>
             <label className="flex items-start mb-2 font-medium text-sm text-[#344054]">
-              Email or Phone number
+              Email
             </label>
             <input
               type="email"
@@ -112,8 +124,11 @@ const Login = () => {
             {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
             <button
-              onClick={sendOtp}
-              className="w-90.75 text-sm font-semibold bg-blue-900 text-white py-2 rounded-[8px]"
+              onClick={(e) => {
+                e.preventDefault();
+                sendOtp();
+              }}
+              className="w-90.75 text-sm font-semibold bg-blue-900 text-white py-2 rounded-[8px] cursor-pointer"
             >
               Send OTP
             </button>
@@ -140,7 +155,7 @@ const Login = () => {
             {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
             <button
-              className="w-90.75 text-sm font-semibold bg-blue-900 text-white py-2 rounded-[8px]"
+              className="w-90.75 text-sm font-semibold bg-blue-900 text-white py-2 rounded-[8px] cursor-pointer"
               onClick={verifyOtp}
             >
               Login

@@ -4,52 +4,55 @@ const sendOtp = require("../utils/sendOtp");
 
 const router = express.Router();
 
-const otpStore = {};
+const otpStore = new Map();
 
 router.post("/send-otp", async (req, res) => {
-  const { email } = req.body;
+  try {
+    const email = req.body.email?.trim().toLowerCase();
 
-  const cleanEmail = email.trim().toLowerCase();
-  console.log("EMAIL:", cleanEmail);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-  const otp = Math.floor(100000 + Math.random() * 900000);
+    otpStore.set(email, otp);
 
-  otpStore[cleanEmail] = otp.toString();
+    await sendOtp(email, otp);
 
-  console.log("KEYS:", Object.keys(otpStore));
+    res.json({
+      success: true,
+      message: "OTP sent successfully",
+    });
+  } catch (error) {
+    console.error("SEND OTP ERROR:", error);
 
-  await sendOtp(cleanEmail, otp);
-
-  res.json({ message: "OTP sent successfully" });
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
 });
 
 router.post("/verify-otp", (req, res) => {
-  const { email, otp } = req.body;
+  const email = req.body.email?.trim().toLowerCase();
+  const otp = req.body.otp;
 
-  const cleanEmail = email?.trim().toLowerCase();
+  const storedOtp = otpStore.get(email);
 
-  console.log("EMAIL:", cleanEmail);
-  console.log("OTP STORE:", otpStore);
-
-  if (!otpStore[cleanEmail]) {
-    return res.status(400).json({ message: "OTP expired or not found" });
+  if (!storedOtp) {
+    return res.status(400).json({ message: "OTP expired" });
   }
 
-  const storedOtp = otpStore[cleanEmail];
-
-  if (storedOtp.toString() !== otp.toString()) {
+  if (storedOtp !== otp) {
     return res.status(400).json({ message: "Invalid OTP" });
   }
 
-  delete otpStore[cleanEmail];
+  otpStore.delete(email);
 
-  const token = jwt.sign({ email: cleanEmail }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ email }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
 
   return res.json({
-    message: "Login successful",
-    token: token,
+    message: "Login success",
+    token,
   });
 });
 
