@@ -12,6 +12,8 @@ router.post("/send-otp", async (req, res) => {
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
+    console.log("OTP:", otp);
+
     otpStore.set(email, otp);
 
     await sendOtp(email, otp);
