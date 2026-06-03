@@ -24,27 +24,22 @@ const Login = () => {
         },
       );
 
-      const data = await res.json();
-
-      console.log("SERVER RESPONSE:", data);
+      const text = await res.text();
+      console.log("SERVER RESPONSE:", text);
 
       if (!res.ok) {
-        alert(data.message || "Server error");
+        alert("Server error");
         return;
       }
 
-      if (data.otp) {
-        console.log("OTP:", data.otp);
-        alert(`OTP: ${data.otp}`);
-      } else {
-        console.warn("OTP not received from backend");
-        alert("OTP generated. Check backend response.");
-      }
+      const data = JSON.parse(text);
+      console.log("OTP:", data.otp);
+
+      alert(`OTP: Check EMAIL for otp`);
 
       setStep(2);
     } catch (error) {
       console.error("FRONTEND ERROR:", error);
-      alert("Something went wrong");
     }
   };
 
